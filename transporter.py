@@ -13,7 +13,7 @@ class UserCancelException(BaseException):
         return self.msg
 
 class DummyExecutor:
-    def submit(self, fn, /, *args, **kwargs):
+    def submit(self, fn, *args, **kwargs):
         fn(*args, **kwargs)
     
     def __enter__(self):
