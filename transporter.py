@@ -94,7 +94,7 @@ class Transporter:
         if not path_use.exists():
             print(f'The directory {path_use} does not exist. Do you want to make it?')
             if self.respond_yes():
-                path_use.mkdir()
+                path_use.mkdir(parents=True)
             else:
                 raise UserCancelException()
         elif path_use.is_file():
