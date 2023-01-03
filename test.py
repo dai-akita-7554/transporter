@@ -26,11 +26,14 @@ path_from = Path('from')
 path_to = Path('to')
 
 for i_dir in [path_from, path_to]:
-    for element in i_dir.iterdir():
-        if element.is_file():
-            element.unlink()
-        else:
-            shutil.rmtree(element)
+    if not i_dir.exists():
+        i_dir.mkdir(parents=True)
+    else:
+        for element in i_dir.iterdir():
+            if element.is_file():
+                element.unlink()
+            else:
+                shutil.rmtree(element)
 
 def make_file(file_name):
     print(f'meke file: {file_name}')
