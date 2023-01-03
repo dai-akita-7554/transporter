@@ -35,21 +35,17 @@ class Transporter:
         self.path_from = Path(path_from).resolve()
         self.path_to = Path(path_to).resolve()
 
-        def decorate_copy(method):
-            def copy_method2(file_path_from, file_path_to):
+        def make_task(method_c, method_d):
+            def task(file_path_from, file_path_to):
                 print('copy file \n' \
                     f'from {file_path_from} \n' \
                     f'to {file_path_to}')
-                method(file_path_from, file_path_to)
-            return copy_method2
-        self.copy_method = decorate_copy(copy_method)
+                method_c(file_path_from, file_path_to)
 
-        def decorate_del(method):
-            def del_method2(file_path_from):
                 print(f'delete file {file_path_from}')
-                method(file_path_from)
-            return del_method2
-        self.del_method = decorate_del(del_method)
+                method_d(file_path_from)
+            return task
+        self.task = make_task(copy_method, del_method)
 
         if self.path_from == self.path_to:
             print(f'from- and to-directory are the same: {self.path_from}. \n' \
@@ -104,6 +100,5 @@ class Transporter:
         file_path_from = self.path_from / file_name
         file_path_to = self.path_to / file_name
 
-        self.executor.submit(self.copy_method, file_path_from, file_path_to)
-        self.executor.submit(self.del_method, file_path_from)
+        self.executor.submit(self.task, file_path_from, file_path_to)
 
